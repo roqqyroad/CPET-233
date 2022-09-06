@@ -34,42 +34,42 @@ begin
     g <= ((w AND x) OR (w AND NOT y AND NOT z) OR (x AND y AND NOT z));
 
     --cond outputs
-        a_cond <= '1' when inputs = (("11--") OR ("--11") OR ("1-00"))
+        a_cond <= '1' when inputs = (("1100") OR ("1101") OR ("1110") OR ("1111") OR ("0011") OR ("1011") OR ("0111") OR ("1000"))
         else '0';
-        b_cond <= '1' when inputs = (("11--") OR ("00-0") OR ("0-11") OR ("001-") OR ("-101"))
+        b_cond <= '1' when inputs = (("1100") OR ("1101") OR ("1110") OR ("1111") OR ("0000") OR ("0010") OR ("0111") OR ("0011") OR ("0101"))
         else '0';
-        c_cond <= '1' when inputs = (("11--") OR ("0-11") OR ("-100"))
+        c_cond <= '1' when inputs = (("1100") OR ("1101") OR ("1110") OR ("1111") OR ("0011") OR ("0111") OR ("0100"))
         else '0';
-        d_cond <= '1' when inputs = (("11--") OR ("--11") OR ("1-00"))
+        d_cond <= '1' when inputs = (("1100") OR ("1101") OR ("1110") OR ("1111") OR ("0011") OR ("0111") OR ("1011") OR ("1000"))
         else '0';
-        e_cond <= '1' when inputs = (("11--") OR ("--11") OR ("00-0") OR ("100-"))
+        e_cond <= '1' when inputs = (("1100") OR ("1101") OR ("1110") OR ("1111") OR ("0011") OR ("0111") OR ("1011") OR ("0000") OR ("0010") OR ("1000") OR ("1001"))
         else '0';
-        f_cond <= '1' when inputs = (("11--") OR ("0-11") OR ("10-0") OR ("-100"))
+        f_cond <= '1' when inputs = (("1100") OR ("1101") OR ("1110") OR ("1111") OR ("0011")  OR ("0111") OR ("1000") OR ("1010") OR ("0100"))
         else '0';
-        g_cond <= '1' when inputs = (("11--") OR ("1-00") OR ("-110"))
+        g_cond <= '1' when inputs = (("1100") OR ("1101") OR ("1110") OR ("1111") OR ("1000") OR ("0110") OR ("1110"))
         else '0';
         
     --sel outputs
     with inputs select 
-    a_sel <= '1' when "11--" | "--11" | "1-00",
+    a_sel <= '1' when "1100" | "1101" | "1110" | "1111" | "0011" | "1011" | "0111" | "1000" | "1100",
         '0' when others;
 	with inputs select
-    b_sel <= '1' when "11--" | "00-0" | "0-11" | "001-" | "-101",
+    b_sel <= '1' when "1100" | "1101" | "1110" | "1111" | "0000" | "0010" | "0111" | "0011" | "0101",
         '0' when others;
     with inputs select
-	 c_sel <= '1' when "11--" | "0-11" | "-100",
+	 c_sel <= '1' when "1100" | "1101" | "1110" | "1111" | "0011" | "0111" | "0100",
         '0' when others;
     with inputs select
-	 d_sel <= '1' when "11--" | "--11" | "1-00",
+	 d_sel <= '1' when "1100" | "1101" | "1110" | "1111" | "0011" | "1011" | "0111" | "1000" | "1100",
         '0' when others;
     with inputs select
-	 e_sel <= '1' when "11--" | "--11" | "00-0" | "100-",
+	 e_sel <= '1' when "1100" | "1101" | "1110" | "1111" | "0011" | "0111" | "1011" | "0000" | "0010" | "1000" | "1001",
         '0' when others;
     with inputs select
-	 f_sel <= '1' when "11--" | "0-11" | "10-0" | "-100",
+	 f_sel <= '1' when "1100" | "1101" | "1110" | "1111" | "0011" | "0111" | "1000" | "1010" | "0100",
         '0' when others;
     with inputs select
-	 g_sel <= '1' when "11--" | "1-00" | "-110",
+	 g_sel <= '1' when "1100" | "1101" | "1110" | "1111" | "1000" | "0110" | "1110",
         '0' when others;
     
 end model;
