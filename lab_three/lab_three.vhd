@@ -5,7 +5,7 @@ use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 --entity
-entity phone_number_displayer is
+entity lab3 is
     port(
         --inputs
         w, x, y, z : in std_logic;
@@ -15,10 +15,10 @@ entity phone_number_displayer is
         a_cond, b_cond, c_cond, d_cond, e_cond, f_cond, g_cond : out std_logic;
         a_sel, b_sel, c_sel, d_sel, e_sel, f_sel, g_sel : out std_logic 
     );
-end phone_number_displayer;
+end lab3;
 
 --architecture
-architecture model of phone_number_displayer is 
+architecture model of lab3 is 
     signal inputs : std_logic_vector(3 downto 0);
 begin
     --inputs
