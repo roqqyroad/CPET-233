@@ -1,7 +1,7 @@
 --Name: Rachel DuBois
 --Section: 02
 --Lab: 02
---Assignment: Homework Two; Question Two
+--Assignment: Homework Two; Question One
 --Due Date: September 8, 2022; 11:59PM EST
 --Completion: September 8, 2022 5:50PM EST
 
