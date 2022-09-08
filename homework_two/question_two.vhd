@@ -11,16 +11,33 @@ entity question_two is
         a, b, s : in std_logic;
 
         --output
-        y : out std_logic;
+        y : out std_logic
     );
 end question_two;
 
 --architecture
 architecture model of question_two is 
+	signal and1, and2 : std_logic;
 begin
     
     --PART A; Simple Assignment Statements
     --y = a!s + sb
-    y <= ((a AND NOT s) OR (s AND b));
+    --y <= ((a AND NOT s) OR (s AND b));
 
+	 --Part C; two internal signals
+	 --and1 <= a AND NOT s;
+	 --and2 <= s AND b;
+	 --y <= and1 OR and2;
+	 
+	 --Part E; rearrangements
+	 --y <= and1 OR and2;
+	 --and1 <= a AND NOT s;
+	 --and2 <= s AND b;
+	 
+	 --Part G; rearrangements again
+	 y <= and1 OR and2;
+	 and2 <= s AND b;
+	 and1 <= a AND NOT s;
+	 
+	 
 end model;
