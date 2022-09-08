@@ -1,3 +1,11 @@
+--Name: Rachel DuBois
+--Section: 02
+--Lab: 02
+--Assignment: Homework Two; Question Two
+--Due Date: September 8, 2022; 11:59PM EST
+--Completion: September 8, 2022 5:50PM EST
+
+
 --libraries
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
