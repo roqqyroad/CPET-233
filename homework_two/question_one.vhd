@@ -1,4 +1,3 @@
---Name: Rachel DuBois
 --Section: 02
 --Lab: 02
 --Assignment: Homework Two; Question One
