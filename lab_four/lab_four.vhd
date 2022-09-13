@@ -16,8 +16,8 @@ entity lab_four is
        w, x, y, z : in std_logic;
 
        --outputs
-       cases: out std_logic;
-       ifthenelse: out std_logic
+       cases: out std_logic_vector(6 downto 0);
+       ifthenelse: out std_logic_vector(6 downto 0)
     );
 end lab_four;
 
@@ -26,8 +26,6 @@ architecture model of lab_four is
 
     --signals
     signal inputs : std_logic_vector(3 downto 0);
-    signal cases_a : std_logic_vector(6 downto 0);
-    signal ifthenelse_a : std_logic_vector(6 downto 0);
     --end of signals
 
     --constants
@@ -48,23 +46,20 @@ architecture model of lab_four is
 begin
     --inputs
     inputs <= w & x & y & z; 
-    cases <= cases_a;
-    ifthenelse <= ifthenelse_a;
-
     --case statement implementation
     case_statement: process(inputs)
     begin
         case inputs is 
-        when "0000" | "0010" => cases_a <= FIVE;
-        when "0001" | "1010" => cases_a <= EIGHT;
-        when "0100" => cases_a <= TWO;
-        when "0101" => cases_a <= SIX;
-        when "0110" => cases_a <= ZERO;
-        when "1000" => cases_a <= ONE;
-        when "1001" => cases_a <= THREE;
-        when "1011"  => cases_a <= FOUR;
-        when "0011" | "0111" => cases_a <= DASH;
-        when others => cases_a <= BLANK;
+        when "0000" | "0010" => cases <= FIVE;
+        when "0001" | "1010" => cases <= EIGHT;
+        when "0100" => cases <= TWO;
+        when "0101" => cases <= SIX;
+        when "0110" => cases <= ZERO;
+        when "1000" => cases <= ONE;
+        when "1001" => cases <= THREE;
+        when "1011"  => cases <= FOUR;
+        when "0011" | "0111" => cases <= DASH;
+        when others => cases <= BLANK;
         end case;
 
     end process case_statement;
@@ -74,35 +69,35 @@ begin
     if_statement: process(inputs)
     begin
         --five
-        if (inputs = "0000" OR "0010") then
-            ifthenelse_a <= FIVE;
+        if (inputs = "0000" OR inputs = "0010") then
+            ifthenelse <= FIVE;
         
-        elsif (inputs = "0001" OR "1010") then
-            ifthenelse_a <= EIGHT;
+        elsif (inputs = "0001" OR inputs = "1010") then
+            ifthenelse <= EIGHT;
 
         elsif (inputs = "0100") then
-            ifthenelse_a <= TWO;
+            ifthenelse <= TWO;
 
         elsif (inputs = "0101") then
-            ifthenelse_a <= SIX;
+            ifthenelse <= SIX;
 
         elsif (inputs = "0110") then   
-            ifthenelse_a <= ZERO;
+            ifthenelse <= ZERO;
 
         elsif (inputs = "1000") then 
-            ifthenelse_a <= ONE;
+            ifthenelse <= ONE;
 
         elsif (inputs = "1001") then 
-            ifthenelse_a <= THREE;
+            ifthenelse <= THREE;
 
         elsif (inputs = "1011") then 
-            ifthenelse_a <= FOUR;
+            ifthenelse <= FOUR;
 
-        elsif (inputs = "0011" OR "0111") then
-            ifthenelse_a <= DASH;
+        elsif (inputs = "0011" OR inputs = "0111") then
+            ifthenelse <= DASH;
  
         else
-            ifthenelse_a <= BLANK;
+            ifthenelse <= BLANK;
 
         end if;
     end process;        
