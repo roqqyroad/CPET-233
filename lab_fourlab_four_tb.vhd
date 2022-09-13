@@ -51,8 +51,8 @@ ARCHITECTURE test OF lab_four_tb IS
             z           : IN  std_logic;
             w           : IN  std_logic;
             ----------------------------  
-            output_case    : OUT std_logic_vector(6 downto 0); 
-            output_if      : OUT std_logic_vector(6 downto 0)            
+            cases    : OUT std_logic_vector(6 downto 0); 
+            ifthenelse      : OUT std_logic_vector(6 downto 0)            
             ); 
     END COMPONENT;
 
