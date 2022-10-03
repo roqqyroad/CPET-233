@@ -37,17 +37,17 @@ begin
 	b_signed <= signed(in_B);
  
     --case statement 
-    calculator_case: process(in_A, in_B, Op)
+    calculator_case: process(a_signed, b_signed, Op)
     begin
         case op is 
-	--addition
-        when "00" => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed) + b_signed);
-	--subtraction
-        when "01" => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed) - b_signed);
+	--addition; one of the two needs to be same size as result
+        when "00" => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed(3) & a_signed) + b_signed);
+	--subtraction; one of the two needs to be same size as result
+        when "01" => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed(3) & a_signed) - b_signed);
 	--multiplication
-        when "10" => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed) * b_signed);
-	--division
-        when others => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed) / b_signed);
+        when "10" => result <= std_logic_vector(a_signed * b_signed);
+	--division; numerator = size of result
+        when others => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed(3) & a_signed) / b_signed);
 
         end case;
     end process calculator_case;
