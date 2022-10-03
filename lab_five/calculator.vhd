@@ -1,4 +1,3 @@
-
 --Section: 02
 --Lab: 02
 --Assignment: Calculator - Lab five
@@ -14,12 +13,12 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity calculator is
     port(
        --inputs
-	a: in std_logic_vector(3 downto 0);	
-	b: in std_logic_vector(3 downto 0);
-	op: in std_logic_vector(1 downto 0); --operation selection
+	in_A: in std_logic_vector(3 downto 0);	
+	in_B: in std_logic_vector(3 downto 0);
+	Op: in std_logic_vector(1 downto 0); --operation selection
 
        --outputs
-       r: out std_logic_vector(7 downto 0)
+       Result: out std_logic_vector(7 downto 0)
     );
 end calculator;
 
@@ -33,23 +32,23 @@ signal a_signed, b_signed : signed(3 downto 0);
 begin
 	
 	--assign signed a and b
-	a_signed <= signed(a);
-	b_signed <= signed(b);
+	a_signed <= signed(in_A);
+	b_signed <= signed(in_B);
  
     --case statement 
-    calculator_case: process(a, b, op)
+    calculator_case: process(in_A, in_B, Op)
     begin
         case op is 
 	--addition
-        when "00" => r <= std_logic_vector(a_signed + b_signed);
+        when "00" => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed) + b_signed);
 	--subtraction
-        when "01" => r <= std_logic_vector(a_signed - b_signed);
+        when "01" => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed) - b_signed);
 	--multiplication
-        when "10" => r <= std_logic_vector(a_signed * b_signed);
+        when "10" => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed) * b_signed);
 	--division
-        when others => r <= std_logic_vector(a_signed / b_signed);
-
-        end case;
+        when "11" => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed) / ( b_signed(3) & b_signed(3) & b_signed(3) & b_signed));
+	
+	end case;
     end process calculator_case;
     --end of case statement
 
