@@ -1,3 +1,4 @@
+--Name: Rachel DuBois
 --Section: 02
 --Lab: 02
 --Assignment: Calculator - Lab five
@@ -46,9 +47,9 @@ begin
 	--multiplication
         when "10" => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed) * b_signed);
 	--division
-        when "11" => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed) / ( b_signed(3) & b_signed(3) & b_signed(3) & b_signed));
-	
-	end case;
+        when others => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed) / b_signed);
+
+        end case;
     end process calculator_case;
     --end of case statement
 
