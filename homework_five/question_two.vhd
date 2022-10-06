@@ -37,11 +37,11 @@ begin
     --if then else statement 
     if_statement: process(a_signed, b_signed, a_s)
     begin
-        --a_s is one, it takes the two's complement of b 
+        --a_s is zero, it adds normally. 
         if (a_s = '0') then
-           
-			sum <= std_logic_vector((a_signed(7) & a_signed) + b_signed);
-        --else, the sum is just a + b
+           sum <= std_logic_vector((a_signed(7) & a_signed) + b_signed);
+	    
+        --else, the sum is a plus the two's complement of b.
         else
            sum <= std_logic_vector((a_signed(7) & a_signed) + ((not(b_signed) + "00000001"))); 
         end if;
