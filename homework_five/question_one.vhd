@@ -3,6 +3,12 @@
 --Lab: 02
 --Assignment: Homework Five - Question One
 
+--libraries
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
 --entity start
 entity question_one is
     port(
