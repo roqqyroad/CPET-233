@@ -3,6 +3,12 @@
 --Lab: 02
 --Assignment: Lab Six - Binary to SSD
 
+--libraries
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
 --START OF ENTITY
 entity binary_to_ssd is
     port(
@@ -23,13 +29,9 @@ architecture structure of binary_to_ssd is
 
     --SIGNALS
     signal abs_num : std_logic_vector(7 downto 0);
-    signal hundreds_dig : std_logic_vector();
-    signal tens_dig : std_logic_vector();
-    signal ones_dig : std_logic_vector();
-    signal hex3 : std_logic_vector(6 downto 0);
-    signal hex2 : std_logic_vector(6 downto 0);
-    signal hex1 : std_logic_vector(6 downto 0);
-    signal hex0 : std_logic_vector(6 downto 0);
+    signal hundreds_dig : std_logic_vector(7 downto 0);
+    signal tens_dig : std_logic_vector(7 downto 0);
+    signal ones_dig : std_logic_vector(6 downto 0);
     
     --end of signals
 
@@ -53,17 +55,16 @@ architecture structure of binary_to_ssd is
     component is_neg is
         port(
             --INPUTS
-            DASH, BLANK : in std_logic_vector(6 downto 0);
             num: in std_logic;
 
             --OUTPUTS
-            hex : out std_logic_vector(6 downto 0)
+            hexx : out std_logic_vector(6 downto 0)
         );
     end component;
     --end of is_neg
     
-    --start of abs
-    component abs is
+    --start of abs_v
+    component abs_v is
         port(
             --INPUTS
             num : in std_logic_vector(7 downto 0);
@@ -72,16 +73,16 @@ architecture structure of binary_to_ssd is
             abs_num : out std_logic_vector(7 downto 0)
         );
     end component;
-    --end of abs
+    --end of abs_v
 
     --start of convert_to_constant
     component convert_to_constant is
         port(
             --INPUTS a _dig value
-            dig : in std_logic_vector();
+            dig : in std_logic_vector(3 downto 0);
 
             --OUTPUTS to a hex display value
-            hex : out std_logic_vector(6 downto 0)
+            hexx : out std_logic_vector(6 downto 0)
         );
     end component;
     --end of convert_to_constant
@@ -91,33 +92,39 @@ begin
 
     --PORT MAPS
 
-    is_neg : is_neg
+    i_neg : is_neg
     port map(
         num => in_num(7),
-        DASH => DASH,
-        BLANK => BLANK,
-        hex => hex3
+        hexx => hex3
     );
 
-    abs_v : abs
+    ab_v : abs_v
     port map(
         num => in_num,
         abs_num => abs_num
     );
+	
+	--assign values for each dig
+	hundreds_dig <= std_logic_vector(unsigned(abs_num) / "01100100");
+	tens_dig <=  std_logic_vector((unsigned(abs_num) rem "01100100")/"0001010");
+	ones_dig <= std_logic_vector((unsigned(abs_num) rem "01100100")rem "0001010");
 
     h_dig : convert_to_constant
     port map(
-
+	dig => hundreds_dig(3 downto 0),
+	hexx => hex2
     );
 
     t_dig : convert_to_constant
     port map(
-
+	dig => tens_dig(3 downto 0),
+	hexx => hex1
     );
 
     o_dig : convert_to_constant
     port map(
-        
+        dig => ones_dig(3 downto 0),
+	hexx => hex0
     );
 
 end structure;
