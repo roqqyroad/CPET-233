@@ -23,7 +23,7 @@ architecture model of question_one is
 begin
 
     --if then else statement 
-    if_statement: process(inputs)
+    if_statement: process(in_num)
     begin
         --if it is negative, take two's complement of the number && n = 1
         if (in_num(7) = '1') then
