@@ -26,7 +26,7 @@ begin
     if_statement: process(inputs)
     begin
         --if it is negative, take two's complement of the number && n = 1
-        if (in_num(7) = "1") then
+        if (in_num(7) = '1') then
         out_num <= ((in_num NAND "00000001") + "00000001");
         n <= '1';    
  
