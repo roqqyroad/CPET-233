@@ -26,7 +26,7 @@ architecture model of abs_v is
     
 begin
     
-    abs_num <= ((num NAND "00000001") + "00000001");
+    abs_num <= (not (num) + "00000001");
 
 end model;
 
