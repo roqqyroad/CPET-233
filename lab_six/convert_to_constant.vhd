@@ -1,7 +1,7 @@
 --Name: Rachel DuBois
 --Section: 02
 --Lab: 02
---Assignment: Lab Six - Absolute Value (Homework Three | Question One)
+--Assignment: Lab Six - Convert to Constant (Homework Three | Question One)
 
 --libraries
 library IEEE;
@@ -10,7 +10,7 @@ use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 --entity
-entity abs_v is
+entity convert_to_constant is
     port(
        --inputs
        dig : in std_logic_vector(3 downto 0);
@@ -18,10 +18,10 @@ entity abs_v is
        --outputs
        hexx: out std_logic_vector(6 downto 0)
     );
-end abs_v;
+end convert_to_constant;
 
 --architecture
-architecture model of abs_v is 
+architecture model of convert_to_constant is 
 
     --constants for assigning to a hex display
     constant ZERO : std_logic_vector(6 downto 0) := "1000000";

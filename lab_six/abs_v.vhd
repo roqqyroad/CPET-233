@@ -20,13 +20,19 @@ entity abs_v is
 end abs_v;
 
 architecture model of abs_v is
-
-    --CONSTANTS
-    constant one : std_logic := '1';
     
 begin
-    
-    abs_num <= (not (num) + "00000001");
+	if_statement : process(num)
+	begin	
+		--if its a negative value, take its two's complement
+   		if (num(7) = '1') then 
+   			abs_num <= (not (num) + "00000001");
+		--if not, return the same number
+		else 
+			abs_num <= num;
+		end if;
+	end process;
 
 end model;
+
 
