@@ -82,7 +82,7 @@ begin
     btssd : binary_to_ssd
     port map(
         --inputs
-        result => in_num,
+        in_num => result,
 
         --outputs
         HEX3 => HEX3,
