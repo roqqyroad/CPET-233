@@ -12,6 +12,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 --entity
 entity calculator is
+	
     port(
        --inputs
 	in_A: in std_logic_vector(3 downto 0);	
@@ -21,6 +22,7 @@ entity calculator is
        --outputs
        Result: out std_logic_vector(7 downto 0)
     );
+	
 end calculator;
 
 --architecture
@@ -40,6 +42,7 @@ begin
     calculator_case: process(a_signed, b_signed, Op)
     begin
         case op is 
+		
 	--addition; one of the two needs to be same size as result
         when "00" => result <= std_logic_vector((a_signed(3) & a_signed(3) & a_signed(3) & a_signed(3) & a_signed) + b_signed);
 	--subtraction; one of the two needs to be same size as result
