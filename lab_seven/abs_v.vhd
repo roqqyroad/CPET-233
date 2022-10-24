@@ -9,6 +9,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
+--start of entity
 entity abs_v is
     port(
         --INPUTS
@@ -18,10 +19,13 @@ entity abs_v is
         abs_num : out std_logic_vector(7 downto 0)
     );
 end abs_v;
-
+--end of entity
+	
+--start of architecture
 architecture model of abs_v is
-    
 begin
+	
+	--start of if statement process
 	if_statement : process(num)
 	begin	
 		--if its a negative value, take its two's complement
@@ -32,7 +36,7 @@ begin
 			abs_num <= num;
 		end if;
 	end process;
+	--end of if statement process
 
 end model;
-
-
+--end of architecture
