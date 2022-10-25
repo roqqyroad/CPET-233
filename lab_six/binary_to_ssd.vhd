@@ -28,6 +28,7 @@ end binary_to_ssd;
 architecture structure of binary_to_ssd is
 
     --SIGNALS
+	
     signal abs_num : std_logic_vector(7 downto 0);
     signal hundreds_dig : std_logic_vector(7 downto 0);
     signal tens_dig : std_logic_vector(7 downto 0);
@@ -36,6 +37,7 @@ architecture structure of binary_to_ssd is
     --end of signals
 
     --CONSTANTS
+
     constant ZERO : std_logic_vector(6 downto 0) := "1000000";
     constant NINE : std_logic_vector(6 downto 0) := "0011000";
     constant EIGHT :  std_logic_vector(6 downto 0) := "0000000";
@@ -48,9 +50,11 @@ architecture structure of binary_to_ssd is
     constant ONE : std_logic_vector(6 downto 0) := "1111001";
     constant DASH : std_logic_vector(6 downto 0) := "0111111";
     constant BLANK : std_logic_vector(6 downto 0) := "1111111";
+    
     --end of constants
 
     --COMPONENTS
+
     --start of is_neg
     component is_neg is
         port(
@@ -87,45 +91,53 @@ architecture structure of binary_to_ssd is
     end component;
     --end of convert_to_constant
 
+--END OF COMPONENTS	    
+	    
 --architecture actually begins
 begin
 
     --PORT MAPS
 
+    --is_neg port map
     i_neg : is_neg
     port map(
         num => in_num(7),
         hexx => hex3
     );
-
+	    
+    --abs_v port map
     ab_v : abs_v
     port map(
         num => in_num,
         abs_num => abs_num
     );
 	
-	--assign values for each dig
+	--SIGNAL ASSIGNING
+	--assign values for each digit for the hundreds, tens, and ones places
 	hundreds_dig <= std_logic_vector(unsigned(abs_num) / "01100100");
 	tens_dig <=  std_logic_vector((unsigned(abs_num) rem "01100100")/"0001010");
 	ones_dig <= std_logic_vector((unsigned(abs_num) rem "01100100")rem "0001010");
 
+    --hundreds digit portmap
     h_dig : convert_to_constant
     port map(
 	dig => hundreds_dig(3 downto 0),
 	hexx => hex2
     );
-
+    --tens digit portmap
     t_dig : convert_to_constant
     port map(
 	dig => tens_dig(3 downto 0),
 	hexx => hex1
     );
-
+    --ones digit portmap
     o_dig : convert_to_constant
     port map(
         dig => ones_dig(3 downto 0),
 	hexx => hex0
     );
+	    
+--END OF PORT MAPS
 
 end structure;
 --END OF ARCHITECTURE
