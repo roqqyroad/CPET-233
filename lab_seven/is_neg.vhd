@@ -9,6 +9,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
+--ENTITY
 entity is_neg is
 	port(
 		num : in std_logic;
@@ -17,7 +18,9 @@ entity is_neg is
 		hexx : out std_logic_vector(6 downto 0)
 	);
 end is_neg;
+--END OF ENTITY
 
+--ARCHITECTURE
 architecture model of is_neg is 
 
 	--constants
@@ -25,6 +28,8 @@ architecture model of is_neg is
 	constant BLANK : std_logic_vector(6 downto 0) := "1111111";
 begin
 
+	--START OF IF STATEMENT PROCESS 
+	--determine whether a value given is negative or positive
 	if_statement : process(num)
 	begin
 		--if num is one then its a negative number
@@ -35,5 +40,7 @@ begin
 			hexx <= BLANK;
 		end if;
 	end process;
+	--END OF IF STATEMENT PROCESS
+			
 end model;
-
+--END OF ARCHITECTURE
