@@ -67,6 +67,7 @@ begin
 
     --PORT MAPS
 
+    --Calculator port map
     calc : calculator
     port map(
         --inputs
@@ -79,6 +80,7 @@ begin
 
     );
 
+    --Binary to SSD port map
     btssd : binary_to_ssd
     port map(
         --inputs
