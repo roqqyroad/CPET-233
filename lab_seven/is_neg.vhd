@@ -1,7 +1,7 @@
 --Name: Rachel DuBois
 --Section: 02
 --Lab: 02
---Assignment: Lab Six - Absolute Value
+--Assignment: Lab Six - Is Negative
 
 --libraries
 library IEEE;
