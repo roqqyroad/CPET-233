@@ -16,7 +16,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity shifter is
     port(
         --INPUTS
-        in_num : in std_logic_vector(9 downto 0);
+        enable, clk, reset_n : in std_logic;
 
         --OUTPUTS
         HEX6 : out std_logic_vector(6 downto 0); 
@@ -33,22 +33,52 @@ end shifter;
 --START OF ARCHITECTURE
 architecture behavior of shifter is
 
+    --TYPES
+    type cons_arr is array (0 to 23) of std_logic_vector(6 downto 0);
+    --end of types
+
     --CONSTANTS
-    constant II : std_logic_vector(6 downto 0) := "0110000"; --gfedcba
-    constant CC : std_logic_vector(6 downto 0) := "1000110";
-    constant EE : std_logic_vector(6 downto 0) := "0000110";
-    constant oo : std_logic_vector(6 downto 0) := "1000000";
-    constant LL : std_logic_vector(6 downto 0) := "1000111";
-    constant dd : std_logic_vector(6 downto 0) := "0100001";
-    constant SS : std_logic_vector(6 downto 0) := "0010010";
-    constant AA : std_logic_vector(6 downto 0) := "0001000";
-    constant HH : std_logic_vector(6 downto 0) := "0001001";
-    constant rr : std_logic_vector(6 downto 0) := "0110001";
+    constant II : std_logic_vector(6 downto 0) := "1001111"; --uppercase I
+    constant CC : std_logic_vector(6 downto 0) := "1000110"; --uppercase C
+    constant EE : std_logic_vector(6 downto 0) := "0000110"; --uppercase E
+    constant OO : std_logic_vector(6 downto 0) := "1000000"; --uppercase O
+    constant LL : std_logic_vector(6 downto 0) := "1000111"; --uppercase L
+    constant DD : std_logic_vector(6 downto 0) := "0100001"; --lowercase d
+    constant SS : std_logic_vector(6 downto 0) := "0010010"; --uppercase S
+    constant AA : std_logic_vector(6 downto 0) := "0001000"; --uppercase A
+    constant HH : std_logic_vector(6 downto 0) := "0001001"; --uppercase H     --constant to reset signal to shift
+    constant RR : std_logic_vector(6 downto 0) := "0110001"; --lowercase r
+    constant SPACE : std_logic_vector(6 downto 0) := "1111111"; -- SPACES
+    constant soda_arr : cons_arr := (II, CC, EE, SPACE, CC, OO, LL, DD, SPACE, SS, OO, DD, AA, SPACE, SS, OO, LL, DD, SPACE, HH, EE, RR, EE, SPACE);
     --end of constants
+
+    --SIGNALS
+    signal shifts : cons_arr;
+    --END OF SIGNALS
     
 --architecture actually begins
 begin
 
+--SHIFTING PROCESS
+    process(enable, clk, reset_n)
+    begin
+
+    if(reset_n = '0') then
+    shifts <= soda_arr;
+
+    elsif(clk'event and clk = '1') then
+        if(enable = '1') then 	
+	shifts(23 downto 1) <= shifts(22 downto 0);
+	shifts(0) <= shifts(23);
+end if;
+end if;
+end process;
+    hex0 => shifts(5);
+    hex1 => shifts(4);
+    hex2 => shifts(3);
+    hex3 => shifts(2);
+    hex4 => shifts(1);
+    hex5 => shifts(0);
+
 end behavior;
 --END OF ARCHITECTURE
-
