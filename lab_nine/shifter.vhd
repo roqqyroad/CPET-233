@@ -34,16 +34,16 @@ end shifter;
 architecture behavior of shifter is
 
     --CONSTANTS
-    constant II : std_logic_vector(6 downto 0) := "0110000"; --g
-    constant CC : std_logic_vector(6 downto 0) := "0011000";
-    constant EE : std_logic_vector(6 downto 0) := "0000000";
+    constant II : std_logic_vector(6 downto 0) := "0110000"; --gfedcba
+    constant CC : std_logic_vector(6 downto 0) := "1000110";
+    constant EE : std_logic_vector(6 downto 0) := "0000110";
     constant oo : std_logic_vector(6 downto 0) := "1000000";
-    constant LL : std_logic_vector(6 downto 0) := "0000010";
-    constant dd : std_logic_vector(6 downto 0) := "0010010";
-    constant SS : std_logic_vector(6 downto 0) := "0011001";
-    constant AA : std_logic_vector(6 downto 0) := "0110000";
-    constant HH : std_logic_vector(6 downto 0) := "0100100";
-    constant rr : std_logic_vector(6 downto 0) := "1111001";
+    constant LL : std_logic_vector(6 downto 0) := "1000111";
+    constant dd : std_logic_vector(6 downto 0) := "0100001";
+    constant SS : std_logic_vector(6 downto 0) := "0010010";
+    constant AA : std_logic_vector(6 downto 0) := "0001000";
+    constant HH : std_logic_vector(6 downto 0) := "0001001";
+    constant rr : std_logic_vector(6 downto 0) := "0110001";
     --end of constants
     
 --architecture actually begins
