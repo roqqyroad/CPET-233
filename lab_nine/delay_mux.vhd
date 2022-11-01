@@ -1,3 +1,4 @@
+
 --Name: Rachel DuBois
 --Section: 02
 --Lab: 02
@@ -17,26 +18,26 @@ entity delay_mux is
         s : in std_logic;
 
         --OUTPUTS
-        max_value : out std_logic_vector()
+        max_value : out std_logic_vector(27 downto 0)
     );
 end delay_mux;
 --END OF ENTITY
 
 --START OF ARCHITECTURE
 architecture behave of delay_mux is
-    --CONSTANTS
-    constant ms : unsigned ( downto 0) := x"";
-    constant ns : unsigned ( downto 0) := x"";
-    --END OF CONStANTS 
+    --constants
+    constant sec : unsigned (27 downto 0) := x"2FAF080";
+    constant ns : unsigned (27 downto 0) := x"0000005";
+    --END OF constant 
 begin
 
     --START OF IF PROCESS
     process(s) is
     begin  
         if (s = '0') then
-            max_value <= ms;
+            max_value <= std_logic_vector((sec));
         else
-            max_value <= ns;
+            max_value <= std_logic_vector((ns));
         end if;
     end process;
     --END OF IF PROCESS
