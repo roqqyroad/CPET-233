@@ -1,3 +1,4 @@
+
 --Name: Rachel DuBois
 --Section: 02
 --Lab: 02
@@ -14,16 +15,16 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity delay_unit is
     port( 
         clk, reset_n : in std_logic;
-        max_value : in std_logic; --retrieved from delay_mux in the slides this is a constant that is equal to a half second
+        max_value : in std_logic_vector(27 downto 0); --retrieved from delay_mux in the slides this is a constant that is equal to a half second
         flag : out std_logic --this flag will be raised every time max_value is hit
     );
+end delay_unit;
 --END OF ENTITY
 
 --START OF ARCHITECTURE
 architecture behavioral of delay_unit is 
     signal count : unsigned(27 downto 0);
-    --We don't need a constant here because we are getting what it would be from delay_mux
-begin
+   begin
     process(clk, reset_n, max_value) is
     begin 
         if (reset_n = '0') then --if reset is active (active low)
@@ -48,5 +49,6 @@ begin
                 flag <= '0'; --else count goes up one
             end if;
         end if;
-    end process
+    end process;
+end behavioral;
 --END OF ARCHITECTURE
