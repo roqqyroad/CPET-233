@@ -1,3 +1,4 @@
+
 --Name: Rachel DuBois
 --Section: 02
 --Lab: 02
@@ -47,7 +48,7 @@ architecture behavior of shifter is
     constant SS : std_logic_vector(6 downto 0) := "0010010"; --uppercase S
     constant AA : std_logic_vector(6 downto 0) := "0001000"; --uppercase A
     constant HH : std_logic_vector(6 downto 0) := "0001001"; --uppercase H     --constant to reset signal to shift
-    constant RR : std_logic_vector(6 downto 0) := "0110001"; --lowercase r
+    constant RR : std_logic_vector(6 downto 0) := "1001110"; --lowercase r
     constant SPACE : std_logic_vector(6 downto 0) := "1111111"; -- SPACES
     constant soda_arr : cons_arr := (II, CC, EE, SPACE, CC, OO, LL, DD, SPACE, SS, OO, DD, AA, SPACE, SS, OO, LL, DD, SPACE, HH, EE, RR, EE, SPACE);
     --end of constants
@@ -68,17 +69,17 @@ begin
 
     elsif(clk'event and clk = '1') then
         if(enable = '1') then 	
-	shifts(23 downto 1) <= shifts(22 downto 0);
-	shifts(0) <= shifts(23);
+	shifts(0 to 22) <= shifts(1 to 23);
+	shifts(23) <= shifts(0);
 end if;
 end if;
 end process;
-    hex0 => shifts(5);
-    hex1 => shifts(4);
-    hex2 => shifts(3);
-    hex3 => shifts(2);
-    hex4 => shifts(1);
-    hex5 => shifts(0);
+    hex0 <= shifts(5);
+    hex1 <= shifts(4);
+    hex2 <= shifts(3);
+    hex3 <= shifts(2);
+    hex4 <= shifts(1);
+    hex5 <= shifts(0);
 
 end behavior;
 --END OF ARCHITECTURE
