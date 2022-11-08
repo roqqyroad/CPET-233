@@ -1,3 +1,4 @@
+
 --*****************************************************************************
 --***************************  VHDL Source Code  ******************************
 --*********  Copyright 2017, Rochester Institute of Technology  ***************
@@ -53,7 +54,7 @@ ARCHITECTURE test OF soda_tb IS
 
    -- Component Declaration for the Unit Under Test (UUT)
    -- if you use a package with the component defined then you do not need this
-   COMPONENT scrolling_display IS
+   COMPONENT shifting_display IS
       PORT(clk, reset_n	         	: IN STD_LOGIC;
             S								: IN STD_LOGIC;
             -------------------------------------------------------------------
@@ -85,7 +86,7 @@ ARCHITECTURE test OF soda_tb IS
 BEGIN  -- test
 
    -- component instantiation
-   UUT : Scrolling_display
+   UUT : shifting_display
       PORT MAP (
 						clk    => clk_tb,
 						reset_n => reset_n_tb,
