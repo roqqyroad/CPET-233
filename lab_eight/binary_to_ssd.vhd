@@ -19,7 +19,6 @@ entity binary_to_ssd is
         in_num : in std_logic_vector(9 downto 0);
 
         --OUTPUTS
-        HEX3 : out std_logic_vector(6 downto 0); --for telling neg or pos
         HEX2 : out std_logic_vector(6 downto 0); --for hundreds_dig value
         HEX1 : out std_logic_vector(6 downto 0); --for tens_dig value
         HEX0 : out std_logic_vector(6 downto 0)  --for ones_dig value
@@ -101,4 +100,5 @@ begin
 
 end structure;
 --END OF ARCHITECTURE
+
 

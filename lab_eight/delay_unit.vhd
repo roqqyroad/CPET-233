@@ -1,4 +1,5 @@
 
+
 --Name: Rachel DuBois
 --Section: 02
 --Lab: 02
@@ -24,13 +25,14 @@ end delay_unit;
 --START OF ARCHITECTURE
 architecture behavioral of delay_unit is 
     signal count : unsigned(27 downto 0);
+
    begin
     process(clk, reset_n, max_value) is
     begin 
         if (reset_n = '0') then --if reset is active (active low)
             count <= (others => '0'); --then reset count
         elsif (clk'event and clk = '1') then
-            if(count = max_value) then
+            if(count = unsigned(max_value)) then
                 count <= (others => '0');
             else 
                 count <= count + 1;
@@ -43,7 +45,7 @@ architecture behavioral of delay_unit is
         if (reset_n = '0') then
             flag <= '0';
         elsif (clk'event and clk = '1') then --if theres a rising edge on the clock
-            if (count = max_value) then --if count == max_value
+            if (count = unsigned(max_value)) then --if count == max_value
                 flag <= '1'; --the value desired has passed, so raise the flag
             else 
                 flag <= '0'; --else count goes up one
