@@ -1,4 +1,5 @@
 
+
 --Name: Rachel DuBois
 --Section: 02
 --Lab: 02
@@ -32,6 +33,11 @@ end shifting_display;
 architecture structure of shifting_display is 
 
     --SIGNALS
+	signal s_max_val : std_logic_vector(27 downto 0);
+	signal s_in_num : std_logic_vector(9 downto 0);
+	signal s_flag : std_logic;
+	signal s_count : std_logic_vector(9 downto 0);
+
     --END OF SIGNALS
     
     --COMPONENTS
@@ -42,7 +48,7 @@ architecture structure of shifting_display is
             --INPUTS 
             s : in std_logic;
             --OUTPUTS 
-            max_value : out std_logic_vector(27 downto 0)
+            max_val : out std_logic_vector(27 downto 0)
             --Will have two constants for 100ms and 100ns
         );
     end component;
@@ -64,8 +70,7 @@ architecture structure of shifting_display is
     component shifter is
         port(
             --INPUTS 
-            clk, reset_n, enable, 
-            time : in std_logic_vector(9 downto 0);
+            clk, reset_n, enable : in std_logic;
             --OUTPUTS 
             HEX5 : out std_logic_vector(6 downto 0); 
             HEX4 : out std_logic_vector(6 downto 0); 
@@ -90,7 +95,7 @@ begin
         --INPUTS 
 	s => s,
         --OUTPUTS 
-	max_value => max_value
+	max_val => s_max_val
     );
     --END OF delay_mux PORT MAP
 
@@ -98,11 +103,11 @@ begin
     du : delay_unit
     port map(
         --INPUTS 
-	max_value => max_value,
+	max_value => s_max_val,
 	clk => clk,
 	reset_n => reset_n,
         --OUTPUTS 
-        flag => flag
+        flag => s_flag
     );
     --END OF delay_unit PORT MAP
 
@@ -112,7 +117,7 @@ begin
         --INPUTS 
 	clk => clk,
 	reset_n => reset_n,
-	flag => enable,
+	enable => s_flag,
         --OUTPUTS 
 	HEX0 => HEX0,
 	HEX1 => HEX1,
