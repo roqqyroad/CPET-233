@@ -58,7 +58,7 @@ ARCHITECTURE test OF timer_tb IS
    COMPONENT timer IS
 	PORT(clk, reset_n, set_n  : IN  STD_LOGIC;
 		  S                   : IN  STD_LOGIC;
-		  Pre_time            : IN  STD_LOGIC_vector(9 downto 0);
+		  timed            : IN  STD_LOGIC_vector(9 downto 0);
 		  HEX0, HEX1, HEX2    : OUT STD_LOGIC_VECTOR(6 downto 0));
 	END COMPONENT;
 
@@ -92,7 +92,7 @@ BEGIN  -- test
          reset_n => reset_n_tb,
          set_n   => set_n_tb,
          S       => S_tb,
-         Pre_time => pre_time_tb,
+         timed => pre_time_tb,
          hex0        => hex0,
          hex1        => hex1,
          hex2        => hex2
