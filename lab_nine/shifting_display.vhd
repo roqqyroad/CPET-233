@@ -1,10 +1,8 @@
-
-
 --Name: Rachel DuBois
 --Section: 02
 --Lab: 02
 --Assignment: Lab Nine - Shifting Display
---Summary: 
+--Summary: Highest level entity of Lab Nine
 
 --libraries
 library IEEE;
@@ -127,7 +125,6 @@ begin
 	HEX5 => HEX5
     );
     --END OF shifter PORT MAP
-
 
     --END OF PORT MAPS
 
