@@ -51,6 +51,7 @@ architecture behavior of shifter is
     constant RR : std_logic_vector(6 downto 0) := "1001110"; --lowercase r
     constant SPACE : std_logic_vector(6 downto 0) := "1111111"; -- SPACES
     constant soda_arr : cons_arr := (II, CC, EE, SPACE, CC, OO, LL, DD, SPACE, SS, OO, DD, AA, SPACE, SS, OO, LL, DD, SPACE, HH, EE, RR, EE, SPACE);
+	--an array of logic vectors
     --end of constants
 
     --SIGNALS
@@ -65,14 +66,14 @@ begin
     begin
 
     if(reset_n = '0') then
-    shifts <= soda_arr;
+   	 shifts <= soda_arr; --gives soda arr on reset
 
-    elsif(clk'event and clk = '1') then
+    elsif(clk'event and clk = '1') then --when clock rising edge
         if(enable = '1') then 	
-	shifts(0 to 22) <= shifts(1 to 23);
-	shifts(23) <= shifts(0);
-end if;
-end if;
+		shifts(0 to 22) <= shifts(1 to 23); --SHIFT 
+		shifts(23) <= shifts(0);
+	end if; --close inner if
+   end if; --close outer if
 end process;
     hex0 <= shifts(5);
     hex1 <= shifts(4);
