@@ -28,19 +28,24 @@ end delay_mux;
 --START OF ARCHITECTURE
 architecture behave of delay_mux is
     --constants
-    constant ms : unsigned (27 downto 0) := x"2FAF07F";
-    constant ns : unsigned (27 downto 0) := x"0000004";
+    constant ms : unsigned (27 downto 0) := x"2FAF07F"; --equal to 1s (ONE SECOND)
+    constant ns : unsigned (27 downto 0) := x"0000004"; --equal to 100ns (NANO)
+    --counts = delay / clock
+
     --END OF constant 
 begin
 
     --START OF IF PROCESS
     process(s) is
     begin  
-        if (s = '1') then
-            max_val <= std_logic_vector((ms));
+        if (s = '1') then --when s is 1
+            max_val <= std_logic_vector((ms)); --we work in s  (excuse the incorrect name)
+        
         else
-            max_val <= std_logic_vector((ns));
-        end if;
+            max_val <= std_logic_vector((ns)); --otherwise we work in ns
+        
+        end if; --close if
+            
     end process;
     --END OF IF PROCESS
     
