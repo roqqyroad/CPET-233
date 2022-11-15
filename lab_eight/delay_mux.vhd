@@ -1,5 +1,3 @@
-
-
 --Name: Rachel DuBois
 --Section: 02
 --Lab: 02
