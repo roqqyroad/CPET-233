@@ -4,7 +4,8 @@
 --Section: 02
 --Lab: 02
 --Assignment: Lab Eight - Delay Mux
---Summary: Selects the delay input for delay_unit. Will select either 1s or 100ns
+--Summary: Selects the delay input for delay_unit. Will select either 100ms or 100ns
+--Used in Lab 9 with minor edits.
 
 --libraries
 library IEEE;
@@ -27,19 +28,23 @@ end delay_mux;
 --START OF ARCHITECTURE
 architecture behave of delay_mux is
     --constants
-    constant ms : unsigned (27 downto 0) := (x"04C4B40" - '1');
-    constant ns : unsigned (27 downto 0) := x"0000004";
+    constant ms : unsigned (27 downto 0) := (x"04C4B40" - '1'); --equal to 100ms (MILI)
+    constant ns : unsigned (27 downto 0) := x"0000004"; --equal to 100ns (NANO)
+    --counts = delay / clock
+
     --END OF constant 
 begin
 
     --START OF IF PROCESS
     process(s) is
     begin  
-        if (s = '1') then
-            max_val <= std_logic_vector((ms));
-        else
-            max_val <= std_logic_vector((ns));
-        end if;
+        if (s = '1') then --when s is 1
+            max_val <= std_logic_vector((ms)); --we are working in ms
+        else --else
+            max_val <= std_logic_vector((ns)); --we work in ns
+        
+        end if; --close if
+            
     end process;
     --END OF IF PROCESS
     
