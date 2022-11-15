@@ -29,13 +29,10 @@ end timer;
 architecture structure of timer is 
 
     --SIGNALS
---signal s_timed : unsigned(9 downto 0) := unsigned(timed);
 	signal s_max_val : std_logic_vector(27 downto 0);
 	signal s_in_num : std_logic_vector(9 downto 0);
 	signal s_flag : std_logic;
 	signal s_count : std_logic_vector(9 downto 0);
-
-
     --END OF SIGNALS
     
     --COMPONENTS
@@ -45,6 +42,7 @@ architecture structure of timer is
         port(
             --INPUTS 
             s : in std_logic;
+		
             --OUTPUTS 
             max_val : out std_logic_vector(27 downto 0)
             --Will have two constants for 100ms and 100ns
@@ -58,6 +56,7 @@ architecture structure of timer is
             --INPUTS 
             clk, reset_n : std_logic;
             max_value : in std_logic_vector(27 downto 0);
+		
             --OUTPUTS 
             flag : out std_logic
         );
@@ -70,6 +69,7 @@ architecture structure of timer is
             --INPUTS 
             clk, reset_n, enable, set_n : in std_logic;
             timed : in std_logic_vector(9 downto 0);
+		
             --OUTPUTS 
             count : out std_logic_vector(9 downto 0)
         );
@@ -101,6 +101,7 @@ begin
     port map(
         --INPUTS 
 	s => s,
+	    
         --OUTPUTS 
 	max_val => s_max_val
     );
@@ -113,6 +114,7 @@ begin
 	max_value => s_max_val,
 	clk => clk,
 	reset_n => reset_n,
+	    
         --OUTPUTS 
 	flag => s_flag
     );
@@ -126,7 +128,8 @@ begin
 	timed => timed,
 	enable => s_flag,
 	clk => clk,
-	reset_n => reset_n, 
+	reset_n => reset_n,
+	    
         --OUTPUTS 
         count => s_count
     );
@@ -137,6 +140,7 @@ begin
     port map(
         --INPUTS 
 	in_num => s_count,
+	    
         --OUTPUTS 
 	hex0 => hex0,
 	hex1 => hex1,
