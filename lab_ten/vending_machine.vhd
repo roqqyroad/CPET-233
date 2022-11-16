@@ -16,11 +16,11 @@ entity vending_machine is
 
         --INPUTS
 	clk, reset_n : in std_logic;
-	nickel_in, dime_in, quarter_in, dispense, coin_return : in std_logic
+	nickel_in, dime_in, quarter_in, dispense, coin_return : in std_logic;
 
         --OUTPUTS
 	red_bull, change_back : in std_logic;
-	hex0, hex1 : in std_logic_vector(6 downto 0);
+	hex0, hex1 : in std_logic_vector(6 downto 0)
 
     );
 end vending_machine;
