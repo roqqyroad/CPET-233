@@ -32,8 +32,8 @@ architecture model of shift_sixteen is
 
 begin
 
-	--counting if processes
-	counting : process(clk, reset_n, sh_ld, r_l)
+	--shitfing if processes
+	shifter : process(clk, reset_n, sh_ld, r_l)
 	begin
 		
 		--reset is active low, 
@@ -47,6 +47,7 @@ begin
 			if(sh_ld = '0') then
 				shifting <= din; --PARALLEL LOADING for shifting (lack there of, rather)
 
+			--SHIFTING
 			elsif(sh_ld = '1') then --SHIFTING for shifting (actually shifting)
 
 				if(r_l = '0') then--LEFT i think...
