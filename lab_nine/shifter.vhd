@@ -70,7 +70,7 @@ begin
 
     elsif(clk'event and clk = '1') then --when clock rising edge
         if(enable = '1') then 	
-		shifts(0 to 22) <= shifts(1 to 23); --SHIFT 
+		shifts(0 to 22) <= shifts(1 to 23); --SHIFT left
 		shifts(23) <= shifts(0);
 	end if; --close inner if
    end if; --close outer if
