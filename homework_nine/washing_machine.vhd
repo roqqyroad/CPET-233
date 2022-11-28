@@ -15,11 +15,12 @@ entity washing_machine is
     port(
 
         --INPUTS
-	clk, reset_n : in std_logic;
-	start, full, empty, minute_timer : in std_logic; --minute_timer is an assumed file
+   clk, reset_n : in std_logic;
+   start, full, empty : in std_logic; --minute_timer is an assumed file
+   minute_timer : in std_logic_vector(6 downto 0);
 
         --OUTPUTS
-	fill_valve, drum_motor, empty_valve : in std_logic
+   fill_valve, drum_motor, empty_valve : out std_logic
 
     );
 end washing_machine;
@@ -33,8 +34,8 @@ architecture structure of washing_machine is
     --end of enums
 
     --SIGNALS
-	signal current_state, next_state : state_type;
-	signal s_fill_valve, s_drum_motor, s_empty_valve : std_logic; 
+   signal current_state, next_state : state_type := IDLE;
+   signal s_fill_valve, s_drum_motor, s_empty_valve : std_logic; 
     --end of signals
 
     --CONSTANTS
@@ -48,14 +49,14 @@ begin
 
 sync : process(clk, reset_n)
 begin
-	
-	if(reset_n = '0') then
-		current_state <= IDLE; --if reset is low (active low) it goes to the default state, which is IDLE
+   
+   if(reset_n = '0') then
+      current_state <= IDLE; --if reset is low (active low) it goes to the default state, which is IDLE
 
-	elseif(rising_edge(clk)) then
-		current_state <= next_state; --or we can advance the machines state if we are at a rising clock edge
+   elsif(rising_edge(clk)) then
+      current_state <= next_state; --or we can advance the machines state if we are at a rising clock edge
 
-	end if; --close if statement
+   end if; --close if statement
 
 end process; --close if process
 
@@ -64,52 +65,52 @@ end process; --close if process
 --comb process
 --decides the next state
 
-comb : process(current_state, nickel_in, dime_in, quarter_in, dispense, coin_return)
+comb : process(current_state, start, full, empty, minute_timer)
     begin
-	case (current_state) is
+   case (current_state) is
 
     --START OF IDLE
-	    when IDLE => --WHEN CURRENT STATE IS idle
-		    if (start = '1') then --when the start button is pressed
-			    next_state <= FILL; --we go to fill state
+       when IDLE => --WHEN CURRENT STATE IS idle
+          if(start = '1') then --when the start button is pressed
+             next_state <= FILL; --we go to fill state
 
-		    else --when nothing is pressed it stays in idle
-			    next_state <= IDLE;		
-		    end if; --end of idle if
+          else --when nothing is pressed it stays in idle
+             next_state <= IDLE;    
+          end if; --end of idle if
     --END OF IDLE
 
     --START OF FILL
-	    when FILL --fill is active until
-		    if(full = '1') then --the machine is full of water
-			    next_state <= AGITATE;
+       when FILL => --fill is active until
+          if(full = '1') then --the machine is full of water
+             next_state <= AGITATE;
 
-		    else --otherwise it will stay in fill
-			    next_state <= FILL;
+          else --otherwise it will stay in fill
+             next_state <= FILL;
             end if;
     --END OF FILL
 
     --START OF AGITATE
-	    when AGITATE --agittate is active until
-		    if((minute_timer) = 7 OR (minute_timer > 7)) then --the timer is greater than or equal to 7
-			    next_state <= DRAIN;
+       when AGITATE => --agittate is active until
+          if(minute_timer >=  7) then --the timer is greater than or equal to 7
+             next_state <= DRAIN;
 
-		    else --otherwise it will stay in agitate
-			    next_state <= AGITATE;
+          else --otherwise it will stay in agitate
+             next_state <= AGITATE;
             end if;
     --END OF AGITATE
 
     --START OF DRAIN
-	    when DRAIN --drain is active until
-		    if(empty = '1') then --the machine has no water inside it anymore
-			    next_state <= RINSE;
+       when DRAIN => --drain is active until
+          if(empty = '1') then --the machine has no water inside it anymore
+             next_state <= RINSE;
 
-		    else --otherwise it will stay in drain
-			    next_state <= DRAIN;
+          else --otherwise it will stay in drain
+             next_state <= DRAIN;
             end if;
     --END OF DRAIN
 
     --START OF RINSE
-        when RINSE --rinse is active until
+        when RINSE => --rinse is active until
             if(full = '1') then --the machine is full of water
                 next_state <= SPIN;
 
@@ -119,8 +120,8 @@ comb : process(current_state, nickel_in, dime_in, quarter_in, dispense, coin_ret
     --END OF RINSE
 
     --START OF SPIN
-        when SPIN --spin is active until
-            if(((timer > 10) or (timer = 10)) and (empty = '1')) then --timer is greater than or equal to 10 AND the machine is empty
+        when SPIN => --spin is active until
+            if((minute_timer >=  10) and (empty = '1')) then --timer is greater than or equal to 10 AND the machine is empty
                 next_state <= IDLE;
 
             else --otherwise it will stay in spin
@@ -128,10 +129,10 @@ comb : process(current_state, nickel_in, dime_in, quarter_in, dispense, coin_ret
             end if;
     --END OF SPIN
 
-    --ANYTHING ELSE WILL GIVE US A NEXT STATE OF IDLE since they were unaccounted for	
-	    when OTHERS =>
-		    next_state <= IDLE;
-	end case; --END OF CASE STATEMENT
+    --ANYTHING ELSE WILL GIVE US A NEXT STATE OF IDLE since they were unaccounted for  
+       when OTHERS =>
+          next_state <= IDLE;
+   end case; --END OF CASE STATEMENT
 
 end process; --END OF COMB STUFF THAT DECIDES WHERE TO GO NEXT
 --end of comb process
@@ -142,13 +143,13 @@ end process; --END OF COMB STUFF THAT DECIDES WHERE TO GO NEXT
 fill_value_out : process(clk) --determines if the water should be added into
 begin
     if(rising_edge(clk)) then
-        if (next_state = IDLE)          then fill_valve = '0' --water should not be added into
-        elsif (next_state = FILL)       then fill_valve = '1' --water should be added into
-        elsif (next_state = AGITATE)    then fill_valve = '0' --water should not be added into
-        elsif (next_state = DRAIN)      then fill_valve = '0' --water should not be added into
-        elsif (next_state = RINSE)      then fill_valve = '1' --water should be added into
-        elsif (next_state = SPIN)       then fill_valve = '0' --water should not be added into
-        else fill_valve = '0' --DEFAULT off
+        if (next_state = IDLE)          then fill_valve <= '0'; --water should not be added into
+        elsif (next_state = FILL)       then fill_valve <= '1'; --water should be added into
+        elsif (next_state = AGITATE)    then fill_valve <= '0'; --water should not be added into
+        elsif (next_state = DRAIN)      then fill_valve <= '0'; --water should not be added into
+        elsif (next_state = RINSE)      then fill_valve <= '1'; --water should be added into
+        elsif (next_state = SPIN)       then fill_valve <= '0'; --water should not be added into
+        else fill_valve <= '0';--DEFAULT off
     
         end if;
     end if;
@@ -156,14 +157,14 @@ end process;
 
 drum_motot_out : process(clk) --determines if the drum motor should be on
 begin
-    if(rising_edge(clk)) 
-        if (next_state = IDLE)          then drum_motor = '0' --drum motor is off
-        elsif (next_state = FILL)       then drum_motor = '0' --drum motor is off
-        elsif (next_state = AGITATE)    then drum_motor = '1' --drum motor is on
-        elsif (next_state = DRAIN)      then drum_motor = '0' --drum motor is off
-        elsif (next_state = RINSE)      then drum_motor = '0' --drum motor is off
-        elsif (next_state = SPIN)       then drum_motor = '1' --drum motor is on
-        else drum_motor = '0' --DEFAULT off
+    if(rising_edge(clk)) then
+        if (next_state = IDLE)          then drum_motor <= '0'; --drum motor is off
+        elsif (next_state = FILL)       then drum_motor <= '0'; --drum motor is off
+        elsif (next_state = AGITATE)    then drum_motor <= '1'; --drum motor is on
+        elsif (next_state = DRAIN)      then drum_motor <= '0'; --drum motor is off
+        elsif (next_state = RINSE)      then drum_motor <= '0'; --drum motor is off
+        elsif (next_state = SPIN)       then drum_motor <= '1'; --drum motor is on
+        else drum_motor <= '0';--DEFAULT off
     
         end if;
     end if;
@@ -171,14 +172,14 @@ end process;
 
 empty_value_out: process(clk) --determines if the water inside should be emptied out
 begin
-    if(rising_edge(clk))
-        if (next_state = IDLE)          then empty_valve = '0' --should not be emptying
-        elsif (next_state = FILL)       then empty_valve = '0' --should not be emptying
-        elsif (next_state = AGITATE)    then empty_valve = '0' --should not be emptying
-        elsif (next_state = DRAIN)      then empty_valve = '1' --should be emptying
-        elsif (next_state = RINSE)      then empty_valve = '0' --should not be emptying
-        elsif (next_state = SPIN)       then empty_valve = '1' --should be emptying
-        else  empty_valve = '0' --DEFAULT off
+    if(rising_edge(clk)) then
+        if (next_state = IDLE)          then empty_valve <= '0';--should not be emptying
+        elsif (next_state = FILL)       then empty_valve <= '0';--should not be emptying
+        elsif (next_state = AGITATE)    then empty_valve <= '0';--should not be emptying
+        elsif (next_state = DRAIN)      then empty_valve <= '1';--should be emptying
+        elsif (next_state = RINSE)      then empty_valve <= '0';--should not be emptying
+        elsif (next_state = SPIN)       then empty_valve <= '1';--should be emptying
+        else  empty_valve <= '0';--DEFAULT off
     
         end if;
     end if;
