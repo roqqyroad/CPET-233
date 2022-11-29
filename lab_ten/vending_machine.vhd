@@ -69,12 +69,10 @@ comb : process(current_state, nickel_in, dime_in, quarter_in, dispense, coin_ret
 begin
 	case (current_state) is
 
---START OF WAIT1
+	--START OF WAIT1
 	when WAIT1 => --WHEN CURRENT STATE IS WAIT1
-		money = money; --money value does not change
 
 		if (coin_return = '1') then --when a coin return is requested
-			--money <= 0; --money is set to zero, since all change is spit out
 			next_state <= CHANGE; --we go to change state
 
 		elsif (nickel_in = '1') then --when a nickel goes in
@@ -86,7 +84,7 @@ begin
 		elsif (quarter_in = '1') then --when a quarter goes in
 			next_state <= QUARTER; --then we go to quarter state 
 
-		elsif (money >= 75) then --if money is equal to or greater than 75
+		elsif ( money >= 75 ) then --if money is equal to or greater than 75
 			next_state <= ENOUGH; --we have enough to get a redbull
 
 		else
@@ -94,69 +92,170 @@ begin
 			--Wait1 doesnt care about if dispense was pressed
 		
 		end if; --end of wait1 if
---END OF WAIT1
+	--END OF WAIT1
 
---ADDITION STATES
+	--ADDITION STATES
 	
-	--START OF NICKEL
+	--when in NICKEL
 	when NICKEL 
-		money <= money + 5; --increase money's value by 5
 
 		if(money < 75) then
 			next_state <= WAIT1;
 
-		elsif( money >= 75 ) then
+		elsif ( money >= 75 ) then
 			next_state <= ENOUGH;
 	--END OF NICKEL
 
-	--START OF DIME
+	--when in DIME
 	when DIME
-		money <= money + 10; --increase money value by 10
 
 		if(money < 75) then
 			next_state <= WAIT1;
 
-		elsif( money >= 75 ) then
+		elsif ( money >= 75 ) then
 			next_state <= ENOUGH;
 	--END OF DIME
 
 
-	--START OF QUARTER
+	--when in QUARTER
 	when QUARTER
-		money <= money + 25; --increase money value by 25
 
 		if(money < 75) then
 			next_state <= WAIT1;
 
-		elsif( money >= 75 ) then
+		elsif ( money >= 75 ) then
 			next_state <= ENOUGH;
 	--END OF QUARTER
 
---END OF ADDITION STATES
+		--END OF ADDITION STATES
 
+    --when in enough
 	when ENOUGH
-		money = money; --money value does not change 
+			if(dime_in = '1' or nickel_in = '1' or quarter_in = '1') then
+				next_state <= EXCESS;
+			elsif(coin_return = '1') then
+				next_state <= CHANGE;
+			elsif(dispense = '1') then
+				next_state <= VEND;
+			else
+				next_state <= ENOUGH;
 	
-
+	--when in excess
 	when EXCESS
-	
+				if(coin_return = '1') then
+					next_state <= CHANGE;
+				elsif (dispense = '1') then
+					next_state <= VEND;
+				else
+					next_state <= EXCESS;
+
+	--when in vend
 	when VEND
-	money <= money - 75;
-	
+				if(money > 0) then
+					next_state <= CHANGE;
+				else
+					next_state <= wait1;
+
+	--when in change	
 	when CHANGE
-
-
---ANYTHING ELSE WILL GIVE US A NEXT STATE OF WAIT1	
+				next_state <= wait1;	
+	--ANYTHING ELSE WILL GIVE US A NEXT STATE OF WAIT1	
 	when OTHERS =>
 		next_state <= WAIT1;
 
 	end case; --END OF CASE STATEMENT
 
 end process; --END OF COMB STUFF THAT DECIDES WHERE TO GO NEXT
-
 --end of comb process
 
 --output processes
+
+money_out : process(clk) --determines money's value
+begin
+    if(rising_edge(clk)) then
+        if (next_state = WAIT1)          	then money = money 
+        elsif (next_state = DIME)       	then money = money + 10
+        elsif (next_state = NICKEL)    		then money = money + 5 
+        elsif (next_state = QUARTER)      	then money = money + 25 
+        elsif (next_state = ENOUGH)      	then money = money 
+        elsif (next_state = EXCESS)     	then money = money 
+		elsif (next_state = VEND)       	then money = money - 75 
+		elsif (next_state = CHANGE)     	then money = 0 
+        else fill_valve = '0' --DEFAULT money is zero
+    
+        end if;
+    end if;
+end process;
+
+red_bull_out : process(clk) --determines if a redbull should be dispensed
+begin
+    if(rising_edge(clk)) then
+        if (next_state = WAIT1)          	then red_bull = '0' --redbull is not dispensed
+        elsif (next_state = DIME)       	then red_bull = '0' --redbull is not dispensed
+        elsif (next_state = NICKEL)    		then red_bull = '0' --redbull is not dispensed
+        elsif (next_state = QUARTER)      	then red_bull = '0' --redbull is not dispensed
+        elsif (next_state = ENOUGH)      	then red_bull = '0' --redbull is not dispensed
+        elsif (next_state = EXCESS)     	then red_bull = '0' --redbull is not dispensed
+		elsif (next_state = VEND)       	then red_bull = '1' --redbull is dispensed
+		elsif (next_state = CHANGE)     	then red_bull = '0' --redbull is not dispensed
+        else fill_valve = '0' --DEFAULT no redbull is sent
+    
+        end if;
+    end if;
+end process;
+
+change_back_out : process(clk) --determines if change should be sent out 
+begin
+    if(rising_edge(clk)) then
+        if (next_state = WAIT1)          	then change_back = '0' --water should not be added into
+        elsif (next_state = DIME)       	then change_back = '0' --water should be added into
+        elsif (next_state = NICKEL)    		then change_back = '0' --water should not be added into
+        elsif (next_state = QUARTER)      	then change_back = '0' --water should not be added into
+        elsif (next_state = ENOUGH)      	then change_back = '0' --water should be added into
+        elsif (next_state = EXCESS)     	then change_back = '1' --water should not be added into
+		elsif (next_state = VEND)       	then change_back = '0' --water should not be added into
+		elsif (next_state = CHANGE)     	then change_back = '1' --water should not be added into
+        else fill_valve = '0' --DEFAULT no change sent out
+    
+        end if;
+    end if;
+end process;
+
+hex0_out : process(clk) --determines if change should be sent out 
+begin
+    if(rising_edge(clk)) then
+        if (next_state = WAIT1)          	then fill_valve = '0' --water should not be added into
+        elsif (next_state = DIME)       	then fill_valve = '1' --water should be added into
+        elsif (next_state = NICKEL)    		then fill_valve = '0' --water should not be added into
+        elsif (next_state = QUARTER)      	then fill_valve = '0' --water should not be added into
+        elsif (next_state = ENOUGH)      	then fill_valve = '1' --water should be added into
+        elsif (next_state = EXCESS)     	then fill_valve = '0' --water should not be added into
+		elsif (next_state = VEND)       	then fill_valve = '0' --water should not be added into
+		elsif (next_state = CHANGE)     	then fill_valve = '0' --water should not be added into
+        else fill_valve = '0' --DEFAULT no change sent out
+    
+        end if;
+    end if;
+end process;
+
+hex1_out : process(clk) --determines if change should be sent out 
+begin
+    if(rising_edge(clk)) then
+        if (next_state = WAIT1)          	then fill_valve = '0' --water should not be added into
+        elsif (next_state = DIME)       	then fill_valve = '1' --water should be added into
+        elsif (next_state = NICKEL)    		then fill_valve = '0' --water should not be added into
+        elsif (next_state = QUARTER)      	then fill_valve = '0' --water should not be added into
+        elsif (next_state = ENOUGH)      	then fill_valve = '1' --water should be added into
+        elsif (next_state = EXCESS)     	then fill_valve = '0' --water should not be added into
+		elsif (next_state = VEND)       	then fill_valve = '0' --water should not be added into
+		elsif (next_state = CHANGE)     	then fill_valve = '0' --water should not be added into
+        else fill_valve = '0' --DEFAULT no change sent out
+    
+        end if;
+    end if;
+end process;
+
+
 
 
 
